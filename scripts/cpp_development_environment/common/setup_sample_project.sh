@@ -7,8 +7,8 @@ set -euo pipefail
 # Get the directory of the currently executing script
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Source common OS-agnostic utilities
-# shellcheck source=./os_agnostic_utils.sh
-source "$SCRIPT_DIRECTORY/os_agnostic_utils.sh"
+# shellcheck source=./utilities.sh
+source "$SCRIPT_DIRECTORY/utilities.sh"
 
 log_info "📁 Creating sample C++ project..."
 

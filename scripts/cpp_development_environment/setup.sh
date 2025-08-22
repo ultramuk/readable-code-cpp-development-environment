@@ -6,8 +6,8 @@ set -euo pipefail
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source common OS-agnostic utilities
-# shellcheck source=./common/os_agnostic_utils.sh
-source "$SCRIPT_DIRECTORY/common/os_agnostic_utils.sh"
+# shellcheck source=./common/utilities.sh
+source "$SCRIPT_DIRECTORY/common/utilities.sh"
 
 # --- OS Detection and Pre-flight Checks ---
 detect_os                                   # This will export DETECTED_OPERATING_SYSTEM

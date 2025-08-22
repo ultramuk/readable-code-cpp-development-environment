@@ -26,13 +26,13 @@ scripts/cpp_development_environment/
 ├── setup.sh                    # 메인 진입점 스크립트
 ├── verify.sh                   # 설치 검증 스크립트
 ├── common/                     # OS 무관 공통 스크립트
-│   ├── os_agnostic_utils.sh    # 핵심 유틸리티 함수
+│   ├── utilities.sh            # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh     # VS Code 설정
 │   └── setup_sample_project.sh # 샘플 프로젝트 생성
 ├── macos/                      # macOS 전용 설치 스크립트
 │   ├── common_utils.sh         # macOS 공통 유틸리티
 │   └── install_*.sh            # 개별 도구 설치 스크립트
-└── linux/                     # Linux 전용 설치 스크립트
+└── linux/                      # Linux 전용 설치 스크립트
     ├── common_utils.sh         # Linux 공통 유틸리티
     └── install_*.sh            # 개별 도구 설치 스크립트
 ```
@@ -46,7 +46,7 @@ scripts/cpp_development_environment/
 
 ### 2. 공통 유틸리티 (common/)
 
-- **os_agnostic_utils.sh**: OS 감지, 오류 처리, 로깅 함수
+- **utilities.sh**: OS 감지, 오류 처리, 로깅 함수
 - **configure_vscode.sh**: VS Code 설정 파일 생성 및 확장 설치
 - **setup_sample_project.sh**: C++ 샘플 프로젝트 생성 및 빌드
 
@@ -82,7 +82,7 @@ scripts/cpp_development_environment/
 ### 내부 관계
 
 ```text
-setup.sh → os_agnostic_utils.sh (OS 감지)
+setup.sh → utilities.sh (OS 감지)
         → macos/common_utils.sh 또는 linux/common_utils.sh
         → 개별 install_*.sh 스크립트들
         → configure_vscode.sh
@@ -103,7 +103,7 @@ setup.sh → os_agnostic_utils.sh (OS 감지)
 |-----------|------|------|-----------|
 | `setup.sh` | 메인 진입점 | `scripts/cpp_development_environment/` | `bash setup.sh` |
 | `verify.sh` | 설치 검증 | `scripts/cpp_development_environment/` | `bash verify.sh` |
-| `os_agnostic_utils.sh` | 공통 유틸리티 | `scripts/cpp_development_environment/common/` | source로 로드 |
+| `utilities.sh` | 공통 유틸리티 | `scripts/cpp_development_environment/common/` | source로 로드 |
 | `configure_vscode.sh` | VS Code 설정 | `scripts/cpp_development_environment/common/` | setup.sh에서 호출 |
 | `setup_sample_project.sh` | 샘플 프로젝트 | `scripts/cpp_development_environment/common/` | setup.sh에서 호출 |
 | `install_*.sh` | 개별 도구 설치 | `scripts/cpp_development_environment/macos/`, `linux/` | setup.sh에서 호출 |

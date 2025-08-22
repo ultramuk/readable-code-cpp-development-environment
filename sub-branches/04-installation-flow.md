@@ -6,7 +6,7 @@
 
 ```mermaid
 graph TD
-    A[setup.sh 시작] --> B[os_agnostic_utils.sh 로드]
+    A[setup.sh 시작] --> B[utilities.sh 로드]
     B --> C[OS 감지]
     C --> D{OS 지원 여부}
     D -->|지원| E[OS별 common_utils.sh 로드]

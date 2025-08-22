@@ -9,7 +9,7 @@ scripts/cpp_development_environment/
 ├── setup.sh                           # 메인 진입점
 ├── verify.sh                          # 설치 검증
 ├── common/                             # OS 무관 공통 스크립트
-│   ├── os_agnostic_utils.sh           # 핵심 유틸리티 함수
+│   ├── utilities.sh           # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh            # VS Code 설정 자동화
 │   └── setup_sample_project.sh        # 샘플 프로젝트 생성
 ├── macos/                              # macOS 전용 설치 스크립트
@@ -36,7 +36,7 @@ scripts/cpp_development_environment/
 
 ### 2.1 common/ 디렉터리
 
-#### os_agnostic_utils.sh
+#### utilities.sh
 - OS 감지 함수 (`detect_os`)
 - 오류 처리 함수 (`handle_error`, `handle_critical_command`)
 - 로깅 함수 (`log_info`, `log_warning`, `log_error`)
@@ -131,7 +131,7 @@ scripts/cpp_development_environment/
 
 ```text
 setup.sh
-├── common/os_agnostic_utils.sh (source)
+├── common/utilities.sh (source)
 ├── macos/common_utils.sh OR linux/common_utils.sh (source)
 ├── macos/install_*.sh OR linux/install_*.sh (순차 실행)
 ├── common/configure_vscode.sh (실행)

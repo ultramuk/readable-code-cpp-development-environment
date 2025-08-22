@@ -5,12 +5,12 @@ set -euo pipefail
 # Common utility functions for macOS installation scripts
 
 # Get the directory of the currently executing script
-# This is needed to reliably source the os_agnostic_utils.sh
+# This is needed to reliably source the utilities.sh
 MACOS_COMMON_UTILITIES_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source OS-agnostic utilities (logging, safety options)
-# shellcheck source=../common/os_agnostic_utils.sh
-source "$MACOS_COMMON_UTILITIES_DIRECTORY/../common/os_agnostic_utils.sh"
+# shellcheck source=../common/utilities.sh
+source "$MACOS_COMMON_UTILITIES_DIRECTORY/../common/utilities.sh"
 
 # --- macOS Specific Program and Brew Utilities ---
 

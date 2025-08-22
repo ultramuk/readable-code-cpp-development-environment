@@ -1,6 +1,6 @@
 # 구성 요소별 상세 설명
 
-## 1. os_agnostic_utils.sh 핵심 기능
+## 1. utilities.sh 핵심 기능
 
 ### 1.1 로깅 시스템
 

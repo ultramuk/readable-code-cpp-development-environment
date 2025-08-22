@@ -5,8 +5,8 @@ set -euo pipefail
 # Common utility functions for Linux installation scripts
 
 LINUX_COMMON_UTILITIES_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../common/os_agnostic_utils.sh
-source "$LINUX_COMMON_UTILITIES_DIRECTORY/../common/os_agnostic_utils.sh"
+# shellcheck source=../common/utilities.sh
+source "$LINUX_COMMON_UTILITIES_DIRECTORY/../common/utilities.sh"
 
 # --- Linux Specific Program and Package Manager Utilities ---
 

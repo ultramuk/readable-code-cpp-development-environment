@@ -9,8 +9,8 @@ set -euo pipefail
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source common OS-agnostic utilities
-# shellcheck source=./cpp_development_environment/common/os_agnostic_utils.sh
-source "$SCRIPT_DIRECTORY/cpp_development_environment/common/os_agnostic_utils.sh"
+# shellcheck source=./cpp_development_environment/common/utilities.sh
+source "$SCRIPT_DIRECTORY/cpp_development_environment/common/utilities.sh"
 
 # --- Configuration ---
 readonly SHFMT_INDENT=2              # 2 spaces indentation

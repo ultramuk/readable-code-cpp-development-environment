@@ -245,7 +245,7 @@ readable-code-cpp-development-environment/
         ├── setup.sh                            # 메인 설정 스크립트
         ├── verify.sh                           # 설치 검증 스크립트
         ├── common/                             # OS 무관 스크립트
-        │   ├── os_agnostic_utils.sh            # 공통 유틸리티 함수
+        │   ├── utilities.sh                    # 공통 유틸리티 함수
         │   ├── configure_vscode.sh             # VS Code 구성
         │   └── setup_sample_project.sh         # 샘플 프로젝트 생성
         ├── macos/                              # macOS 전용 스크립트

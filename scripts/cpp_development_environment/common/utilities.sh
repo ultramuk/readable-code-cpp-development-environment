@@ -3,10 +3,10 @@
 set -euo pipefail
 
 # Guard to prevent multiple sourcing
-if [[ -n "${OS_AGNOSTIC_UTILS_LOADED:-}" ]]; then
+if [[ -n "${UTILITIES_LOADED:-}" ]]; then
   return 0
 fi
-readonly OS_AGNOSTIC_UTILS_LOADED=1
+readonly UTILITIES_LOADED=1
 
 # Common OS-agnostic utility functions
 

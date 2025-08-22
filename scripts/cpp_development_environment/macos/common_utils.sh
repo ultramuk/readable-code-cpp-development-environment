@@ -8,7 +8,7 @@ set -euo pipefail
 # This is needed to reliably source the utilities.sh
 MACOS_COMMON_UTILITIES_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source OS-agnostic utilities (logging, safety options)
+# Source utilities (logging, safety options)
 # shellcheck source=../common/utilities.sh
 source "$MACOS_COMMON_UTILITIES_DIRECTORY/../common/utilities.sh"
 

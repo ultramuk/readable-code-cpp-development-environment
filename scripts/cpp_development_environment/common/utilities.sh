@@ -8,7 +8,7 @@ if [[ -n "${UTILITIES_LOADED:-}" ]]; then
 fi
 readonly UTILITIES_LOADED=1
 
-# Common OS-agnostic utility functions
+# Common utility functions
 
 # --- Logging functions ---
 # Usage: log_info "This is an info message"
@@ -90,8 +90,8 @@ validate_required_programs()
   fi
 }
 
-# Indicate that OS-agnostic utilities have been loaded (optional, for debugging)
-# log_info "OS-agnostic utilities loaded."
+# Indicate that utilities have been loaded (optional, for debugging)
+# log_info "utilities loaded."
 
 # Detects the current operating system and exports it as DETECTED_OS
 # Usage: detect_os

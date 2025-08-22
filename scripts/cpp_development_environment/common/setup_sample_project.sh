@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Get the directory of the currently executing script
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Source common OS-agnostic utilities
+# Source common utilities
 # shellcheck source=./utilities.sh
 source "$SCRIPT_DIRECTORY/utilities.sh"
 

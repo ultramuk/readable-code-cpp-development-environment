@@ -8,7 +8,7 @@ set -euo pipefail
 # Get the directory of the currently executing script
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source common OS-agnostic utilities
+# Source common utilities
 # shellcheck source=./cpp_development_environment/common/utilities.sh
 source "$SCRIPT_DIRECTORY/cpp_development_environment/common/utilities.sh"
 

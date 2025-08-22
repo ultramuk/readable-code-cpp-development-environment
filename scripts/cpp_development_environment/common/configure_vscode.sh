@@ -7,7 +7,7 @@ set -euo pipefail
 # Get the directory of the currently executing script
 CONFIGURE_VSCODE_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source common OS-agnostic utilities
+# Source common utilities
 # shellcheck source=./utilities.sh
 source "$CONFIGURE_VSCODE_DIRECTORY/utilities.sh"
 

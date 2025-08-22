@@ -43,6 +43,7 @@ install_vscode_extensions()
     "github.vscode-pull-request-github"
     "mhutchie.git-graph"
     "ms-vsliveshare.vsliveshare"
+    "atlassian.atlascode"
 
     # --- Code Quality & Readability ---
     "streetsidesoftware.code-spell-checker"
@@ -50,11 +51,15 @@ install_vscode_extensions()
     "oderwat.indent-rainbow"
     "usernamehw.errorlens"
     "editorconfig.editorconfig"
+    "albert.tabout"
+    "msfukui.eof-mark"
 
     # --- Other Useful Utilities ---
     "christian-kohler.path-intellisense"
     "redhat.vscode-yaml"
     "docker.docker"
+    "ms-vscode-remote.remote-ssh"
+    "sculove.translator"
   )
 
   local installed_extensions

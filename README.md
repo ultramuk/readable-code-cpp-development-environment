@@ -258,7 +258,6 @@ readable-code-cpp-development-environment/
         │   ├── install_vscode.sh               # VS Code 설치
         │   └── install_coding_font.sh          # Fira Code 폰트 설치
         └── linux/                              # Linux 전용 스크립트
-            ├── common_utils.sh                 # Linux 공통 유틸리티
             ├── install_clang.sh                # Clang/LLVM 설치
             ├── install_cmake.sh                # CMake 설치
             ├── install_ninja.sh                # Ninja 설치

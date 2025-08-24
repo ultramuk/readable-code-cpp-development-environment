@@ -16,10 +16,6 @@ source "$SCRIPT_DIRECTORY/common/utilities.sh"
 detect_os # This will export DETECTED_OPERATING_SYSTEM
 OPERATING_SYSTEM=$DETECTED_OPERATING_SYSTEM
 
-# Source OS-specific utilities
-# shellcheck source=./macos/common_utils.sh
-source "$SCRIPT_DIRECTORY/$OPERATING_SYSTEM/common_utils.sh"
-
 log_info "🚀 Starting verification of installed tools..."
 
 # List of essential commands to verify.

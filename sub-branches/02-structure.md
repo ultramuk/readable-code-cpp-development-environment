@@ -8,36 +8,31 @@
 scripts/cpp_development_environment/
 ├── setup.sh                           # 메인 진입점
 ├── verify.sh                          # 설치 검증
-├── common/                             # OS 무관 공통 스크립트
-│   ├── os_agnostic_utils.sh           # 핵심 유틸리티 함수
+├── common/                            # 공통 스크립트
+│   ├── utilities.sh                   # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh            # VS Code 설정 자동화
 │   └── setup_sample_project.sh        # 샘플 프로젝트 생성
-├── macos/                              # macOS 전용 설치 스크립트
-│   ├── common_utils.sh                # Homebrew 래퍼 함수
-│   └── install_*.sh                   # 개별 도구 설치 스크립트 (7개)
 └── linux/                             # Linux 전용 설치 스크립트
-    ├── common_utils.sh                # apt 래퍼 함수
     └── install_*.sh                   # 개별 도구 설치 스크립트 (7개)
 ```
 
 ### 1.2 개별 도구 설치 스크립트
 
-| 도구 | macOS 스크립트 | Linux 스크립트 | 설치 방법 |
+| 도구 | Linux 스크립트 | 설치 방법 |
 |------|----------------|----------------|-----------|
-| Clang/LLVM | `install_clang.sh` | `install_clang.sh` | brew/apt |
-| CMake | `install_cmake.sh` | `install_cmake.sh` | brew/apt |
-| Ninja | `install_ninja.sh` | `install_ninja.sh` | brew/apt |
-| Git | `install_git.sh` | `install_git.sh` | brew/apt |
-| GitHub CLI | `install_github_cli.sh` | `install_github_cli.sh` | brew/apt |
-| Fira Code | `install_coding_font.sh` | `install_coding_font.sh` | brew cask/apt |
-| VS Code | `install_vscode.sh` | `install_vscode.sh` | brew cask/snap |
+| Clang/LLVM | `install_clang.sh` | brew/apt |
+| CMake | `install_cmake.sh` | brew/apt |
+| Ninja | `install_ninja.sh` | brew/apt |
+| Git | `install_git.sh` | brew/apt |
+| GitHub CLI | `install_github_cli.sh` | brew/apt |
+| Fira Code | `install_coding_font.sh` | brew cask/apt |
+| VS Code | `install_vscode.sh` | brew cask/snap |
 
 ## 2. 디렉터리별 역할
 
 ### 2.1 common/ 디렉터리
 
-#### os_agnostic_utils.sh
-- OS 감지 함수 (`detect_os`)
+#### utilities.sh
 - 오류 처리 함수 (`handle_error`, `handle_critical_command`)
 - 로깅 함수 (`log_info`, `log_warning`, `log_error`)
 - 설치 워크플로우 실행 함수
@@ -53,19 +48,7 @@ scripts/cpp_development_environment/
 - main.cpp 소스 파일 생성
 - 프로젝트 빌드 실행
 
-### 2.2 macos/ 디렉터리
-
-#### common_utils.sh
-- Homebrew 설치 확인 함수
-- brew 명령어 래퍼 함수
-- macOS 시스템 정보 수집
-
-#### 개별 설치 스크립트
-- Homebrew를 통한 패키지 설치
-- 설치 성공 여부 검증
-- PATH 환경 변수 확인
-
-### 2.3 linux/ 디렉터리
+### 2.2 linux/ 디렉터리
 
 #### common_utils.sh
 - apt 패키지 매니저 업데이트
@@ -97,7 +80,7 @@ scripts/cpp_development_environment/
 ### 3.2 CI/CD 설정
 
 #### .github/workflows/ci.yml
-- macOS와 Linux 매트릭스 빌드
+- Linux 매트릭스 빌드
 - setup.sh 스크립트 실행
 - verify.sh 검증 실행
 - 설치된 도구들의 버전 확인
@@ -110,7 +93,7 @@ scripts/cpp_development_environment/
 |------|------|------|
 | `setup.sh` | 메인 진입점 | 전체 설치 프로세스 시작 |
 | `verify.sh` | 검증 스크립트 | 설치 완료 후 확인 |
-| `common_utils.sh` | 공통 유틸리티 | OS별 패키지 매니저 래퍼 |
+| `common_utils.sh` | 공통 유틸리티 | 패키지 매니저 래퍼 |
 | `install_*.sh` | 개별 도구 설치 | `install_clang.sh`, `install_cmake.sh` |
 | `configure_*.sh` | 설정 작업 | `configure_vscode.sh` |
 | `setup_*.sh` | 초기 구성 | `setup_sample_project.sh` |
@@ -119,7 +102,6 @@ scripts/cpp_development_environment/
 
 | 패턴 | 용도 | 예시 |
 |------|------|------|
-| `detect_*` | 감지 함수 | `detect_os` |
 | `handle_*` | 처리 함수 | `handle_error`, `handle_critical_command` |
 | `log_*` | 로깅 함수 | `log_info`, `log_warning`, `log_error` |
 | `install_*` | 설치 함수 | `install_with_brew`, `install_with_apt` |
@@ -131,9 +113,7 @@ scripts/cpp_development_environment/
 
 ```text
 setup.sh
-├── common/os_agnostic_utils.sh (source)
-├── macos/common_utils.sh OR linux/common_utils.sh (source)
-├── macos/install_*.sh OR linux/install_*.sh (순차 실행)
+├── common/utilities.sh (source)
 ├── common/configure_vscode.sh (실행)
 └── common/setup_sample_project.sh (실행)
 ```
@@ -142,7 +122,6 @@ setup.sh
 
 | 플랫폼 | 필수 의존성 | 선택적 의존성 |
 |--------|-------------|---------------|
-| macOS | Homebrew, 인터넷 연결 | Xcode Command Line Tools |
 | Linux | sudo 권한, apt, 인터넷 연결 | snapd |
 | 공통 | Bash 4.0+, curl/wget | - |
 

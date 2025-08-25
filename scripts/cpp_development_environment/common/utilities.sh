@@ -2,7 +2,13 @@
 
 set -euo pipefail
 
-# Common OS-agnostic utility functions
+# Guard to prevent multiple sourcing
+if [[ -n "${UTILITIES_LOADED:-}" ]]; then
+  return 0
+fi
+readonly UTILITIES_LOADED=1
+
+# Common utility functions
 
 # --- Logging functions ---
 # Usage: log_info "This is an info message"
@@ -84,66 +90,24 @@ validate_required_programs()
   fi
 }
 
-# Indicate that OS-agnostic utilities have been loaded (optional, for debugging)
-# log_info "OS-agnostic utilities loaded."
+# Indicate that utilities have been loaded (optional, for debugging)
+# log_info "utilities loaded."
 
-# Detects the current operating system and exports it as DETECTED_OS
-# Usage: detect_os
-#        echo "Running on: $DETECTED_OS"
-detect_os()
+# Performs pre-flight checks
+# Usage: perform_preflight_checks
+perform_preflight_checks()
 {
-  local detected_os_type
-  if [[ -z "${OSTYPE-''}" ]]; then
-    case "$(uname -s)" in
-      Darwin*) detected_os_type="darwin" ;;
-      Linux*) detected_os_type="linux-gnu" ;;
-      *) detected_os_type="unknown" ;;
-    esac
-  else
-    detected_os_type="$OSTYPE"
-  fi
-
-  if [[ "$detected_os_type" == "darwin"* ]]; then
-    export DETECTED_OPERATING_SYSTEM="macos"
-  elif [[ "$detected_os_type" == "linux-gnu"* ]]; then
-    export DETECTED_OPERATING_SYSTEM="linux"
-  else
-    log_error "❌ Unsupported operating system: '$detected_os_type'"
-    exit 1
-  fi
-  log_info "Operating System detected: $DETECTED_OPERATING_SYSTEM"
+  log_info "🔍 Running Linux pre-flight checks..."
+  validate_required_programs "apt-get" "sudo"
+  log_info "✅ Linux pre-flight checks completed successfully"
 }
 
-# Performs OS-specific pre-flight checks
-# Usage: perform_os_preflight_checks
-perform_os_preflight_checks()
-{
-  local os="$DETECTED_OPERATING_SYSTEM"
-
-  case "$os" in
-    "macos")
-      log_info "🔍 Running macOS pre-flight checks..."
-      validate_required_programs "brew"
-      log_info "✅ macOS pre-flight checks completed successfully"
-      ;;
-    "linux")
-      log_info "🔍 Running Linux pre-flight checks..."
-      validate_required_programs "apt-get" "sudo"
-      log_info "✅ Linux pre-flight checks completed successfully"
-      ;;
-    *)
-      handle_error "$ERROR_GENERAL" "Unsupported operating system for pre-flight checks: $os"
-      ;;
-  esac
-}
-
-# Defines the installation steps for the specified OS
-# Usage: get_installation_steps <operating_system> <script_directory>
+# Defines the installation steps for the linux
+# Usage: get_installation_steps <script_directory>
 get_installation_steps()
 {
-  local os="$1"
-  local script_directory="$2"
-  local target_directory="$script_directory/$os"
+  local script_directory="$1"
+  local target_directory="$script_directory/linux"
 
   declare -a steps
   steps=(
@@ -179,20 +143,19 @@ execute_installation_step()
   echo "----------------------------------------"
 }
 
-# Executes all installation steps for the specified OS
-# Usage: execute_installation_workflow <operating_system> <script_directory>
+# Executes all installation steps for the linux
+# Usage: execute_installation_workflow <script_directory>
 execute_installation_workflow()
 {
-  local os="$1"
-  local script_directory="$2"
+  local script_directory="$1"
 
-  log_info "🚀 Starting installation workflow for $os..."
+  log_info "🚀 Starting installation workflow for linux..."
 
   # Get installation steps and execute each one
   # Using temporary file for maximum compatibility
   local temp_steps_file
   temp_steps_file=$(mktemp)
-  get_installation_steps "$os" "$script_directory" >"$temp_steps_file"
+  get_installation_steps "$script_directory" >"$temp_steps_file"
 
   while IFS= read -r step; do
     if [[ -n "$step" ]]; then
@@ -202,10 +165,10 @@ execute_installation_workflow()
 
   rm -f "$temp_steps_file"
 
-  log_info "🎉 ✅ All components installed and configured successfully for $os!"
+  log_info "🎉 ✅ All components installed and configured successfully for linux!"
 }
 
-# --- OS-Agnostic Program and Command Utilities ---
+# --- Common Program and Command Utilities ---
 
 # Checks if a program (command) is installed and in PATH.
 # This function is universal for any POSIX-compliant shell.
@@ -217,7 +180,7 @@ is_program_installed()
 }
 
 # Verifies if a command is available and executable by running it with a version flag.
-# This is generally OS-agnostic, as most command-line tools support a --version or similar flag.
+# This is generally, as most command-line tools support a --version or similar flag.
 # Usage: verify_command "git" "[--version]"
 verify_command()
 {
@@ -247,5 +210,110 @@ verify_command()
     log_error "❌ '$program_to_verify' not found in PATH. Verification failed."
     return 1
   fi
+  return 0
+}
+
+# --- Linux Specific Program and Package Manager Utilities ---
+
+# Updates the apt package cache.
+# Usage: update_apt_cache
+update_apt_cache()
+{
+  log_info "Updating apt package cache (sudo apt-get update)..."
+  handle_critical_command "sudo apt-get update -y" "Failed to update apt package cache. Please check permissions and network."
+  log_info "✅ Apt package cache updated successfully."
+  return 0
+}
+
+# Installs multiple packages using apt-get.
+# Usage: install_packages "package1" "package2" ...
+install_packages()
+{
+  local packages_to_install=("$@")
+  if [ ${#packages_to_install[@]} -eq 0 ]; then
+    log_warning "No packages specified for installation."
+    return 0
+  fi
+
+  log_info "Installing packages: ${packages_to_install[*]}..."
+  # We don't check if they are already installed, as apt will handle it gracefully.
+  if sudo apt-get install -y "${packages_to_install[@]}"; then
+    log_info "✅ Packages installed successfully."
+    return 0
+  else
+    log_error "❌ Failed to install one or more packages. Please check apt-get logs."
+    return 1
+  fi
+}
+
+# Installs a package using apt-get.
+# Usage: install_with_apt "package_name"
+install_with_apt()
+{
+  local package_to_install="$1"
+  local package_display_name="$package_to_install"
+
+  log_info "Checking if $package_display_name is installed..."
+  if dpkg -s "$package_to_install" &>/dev/null; then
+    log_info "✅ $package_display_name is already installed."
+    return 0
+  fi
+
+  log_info "Installing $package_display_name with apt-get..."
+  if sudo apt-get install -y "$package_to_install"; then
+    log_info "✅ $package_display_name installed successfully."
+    return 0
+  else
+    log_error "❌ Failed to install $package_display_name. Please check apt-get logs."
+    return 1
+  fi
+}
+
+# --- Linux specific common utilities loaded ---
+
+# A helper function to install and verify a tool.
+# It handles both critical and non-critical tools.
+# Usage: install_and_verify_tool <program_name> <package_name> <is_critical>
+install_and_verify_tool()
+{
+  local program_name="$1"
+  local package_name="$2"
+  local is_critical="$3" # "true" or "false"
+
+  log_info "--- Processing $program_name ---"
+
+  if is_program_installed "$program_name"; then
+    log_info "✅ $program_name is already installed. Verifying..."
+    if verify_command "$program_name"; then
+      log_info "✅ $program_name verification successful."
+      return 0
+    fi
+
+    log_warning "Verification failed for installed $program_name. Attempting reinstallation."
+  else
+    log_info "$program_name is not installed. Proceeding with installation."
+  fi
+
+  # Installation/Reinstallation
+  if ! install_with_apt "$package_name"; then
+    if [[ "$is_critical" == "true" ]]; then
+      handle_error "$ERROR_INSTALLATION_FAILED" "Installation of critical tool '$package_name' failed"
+    else
+      log_warning "Installation of non-critical tool '$package_name' failed."
+      return 1
+    fi
+  fi
+
+  # Final verification
+  if ! verify_command "$program_name"; then
+    if [[ "$is_critical" == "true" ]]; then
+      handle_error "$ERROR_VERIFICATION_FAILED" "Verification of critical tool '$program_name' failed after installation"
+    else
+      log_warning "Verification of non-critical tool '$program_name' failed after installation."
+      return 1
+    fi
+  fi
+
+  log_info "✅ Successfully installed and verified $program_name."
   return 0
 }

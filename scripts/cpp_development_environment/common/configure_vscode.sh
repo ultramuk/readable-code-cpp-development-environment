@@ -7,9 +7,9 @@ set -euo pipefail
 # Get the directory of the currently executing script
 CONFIGURE_VSCODE_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source common OS-agnostic utilities
-# shellcheck source=./os_agnostic_utils.sh
-source "$CONFIGURE_VSCODE_DIRECTORY/os_agnostic_utils.sh"
+# Source common utilities
+# shellcheck source=./utilities.sh
+source "$CONFIGURE_VSCODE_DIRECTORY/utilities.sh"
 
 log_info "⚙️ Configuring Visual Studio Code..."
 
@@ -43,6 +43,7 @@ install_vscode_extensions()
     "github.vscode-pull-request-github"
     "mhutchie.git-graph"
     "ms-vsliveshare.vsliveshare"
+    "atlassian.atlascode"
 
     # --- Code Quality & Readability ---
     "streetsidesoftware.code-spell-checker"
@@ -50,11 +51,15 @@ install_vscode_extensions()
     "oderwat.indent-rainbow"
     "usernamehw.errorlens"
     "editorconfig.editorconfig"
+    "albert.tabout"
+    "msfukui.eof-mark"
 
     # --- Other Useful Utilities ---
     "christian-kohler.path-intellisense"
     "redhat.vscode-yaml"
     "docker.docker"
+    "ms-vscode-remote.remote-ssh"
+    "sculove.translator"
   )
 
   local installed_extensions

@@ -8,9 +8,9 @@ set -euo pipefail
 # Get the directory of the currently executing script
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source common OS-agnostic utilities
-# shellcheck source=./cpp_development_environment/common/os_agnostic_utils.sh
-source "$SCRIPT_DIRECTORY/cpp_development_environment/common/os_agnostic_utils.sh"
+# Source common utilities
+# shellcheck source=./cpp_development_environment/common/utilities.sh
+source "$SCRIPT_DIRECTORY/cpp_development_environment/common/utilities.sh"
 
 # --- Configuration ---
 readonly SHFMT_INDENT=2              # 2 spaces indentation
@@ -32,31 +32,21 @@ ensure_shfmt_installed()
 
   log_info "📦 Installing shfmt..."
 
-  case "$DETECTED_OPERATING_SYSTEM" in
-    "macos")
-      handle_critical_command "brew install shfmt" "Failed to install shfmt via Homebrew"
-      ;;
-    "linux")
-      # Install shfmt via Go (most reliable method for Linux)
-      if ! is_program_installed "go"; then
-        log_info "Installing Go first (required for shfmt)..."
-        update_apt_cache
-        handle_critical_command "sudo apt-get install -y golang-go" "Failed to install Go"
-      fi
-      handle_critical_command "go install mvdan.cc/sh/v3/cmd/shfmt@latest" "Failed to install shfmt via Go"
+  # Install shfmt via Go (most reliable method for Linux)
+  if ! is_program_installed "go"; then
+    log_info "Installing Go first (required for shfmt)..."
+    update_apt_cache
+    handle_critical_command "sudo apt-get install -y golang-go" "Failed to install Go"
+  fi
+  handle_critical_command "go install mvdan.cc/sh/v3/cmd/shfmt@latest" "Failed to install shfmt via Go"
 
-      # Add GOPATH/bin to PATH if not already there
-      local gopath_bin
-      gopath_bin="$(go env GOPATH)/bin"
-      if [[ ":$PATH:" != *":$gopath_bin:"* ]]; then
-        export PATH="$PATH:$gopath_bin"
-        log_info "Added $gopath_bin to PATH for current session"
-      fi
-      ;;
-    *)
-      handle_error "$ERROR_GENERAL" "Unsupported operating system for shfmt installation: $DETECTED_OPERATING_SYSTEM"
-      ;;
-  esac
+  # Add GOPATH/bin to PATH if not already there
+  local gopath_bin
+  gopath_bin="$(go env GOPATH)/bin"
+  if [[ ":$PATH:" != *":$gopath_bin:"* ]]; then
+    export PATH="$PATH:$gopath_bin"
+    log_info "Added $gopath_bin to PATH for current session"
+  fi
 
   log_info "✅ shfmt installed successfully"
 }
@@ -163,15 +153,9 @@ run_shellcheck()
 
   if ! is_program_installed "shellcheck"; then
     log_warning "shellcheck not found. Installing..."
-    case "$DETECTED_OPERATING_SYSTEM" in
-      "macos")
-        handle_critical_command "brew install shellcheck" "Failed to install shellcheck"
-        ;;
-      "linux")
-        update_apt_cache
-        handle_critical_command "sudo apt-get install -y shellcheck" "Failed to install shellcheck"
-        ;;
-    esac
+
+    update_apt_cache
+    handle_critical_command "sudo apt-get install -y shellcheck" "Failed to install shellcheck"
   fi
 
   local shellcheck_failed=false
@@ -227,9 +211,6 @@ EOF
 
 # --- Main Logic ---
 
-# Detect OS first
-detect_os
-
 # Parse command line arguments
 if [[ $# -eq 0 ]]; then
   show_usage
@@ -250,11 +231,11 @@ case "$1" in
     get_shell_script_files >"$script_list_file"
 
     while IFS= read -r script_file; do
-      ((script_count++))
+      ((script_count++)) || true
       if format_shell_script "$script_file"; then
-        ((formatted_count++))
+        ((formatted_count++)) || true
       else
-        ((failed_count++))
+        ((failed_count++)) || true
       fi
     done <"$script_list_file"
 

@@ -229,7 +229,6 @@ ninja
 
 | 플랫폼 | 설정 파일 경로 | 검증 방법 |
 |--------|----------------|-----------|
-| macOS | `~/Library/Application Support/Code/User/settings.json` | `test -f` |
 | Linux | `~/.config/Code/User/settings.json` | `test -f` |
 
 #### 확장 설치 검증
@@ -273,13 +272,6 @@ code --list-extensions | grep -E "(clangd|ms-vscode)"
 | 링크 오류 | 라이브러리 누락 | 필요한 개발 패키지 설치 |
 
 ### 5.2 플랫폼별 특이사항
-
-#### macOS 특이사항
-
-| 문제 | 원인 | 해결 방법 |
-|------|------|----------|
-| Apple Clang vs LLVM Clang | 여러 clang 버전 존재 | PATH 순서 확인 |
-| Homebrew 경로 문제 | Intel/Apple Silicon 차이 | `/opt/homebrew` vs `/usr/local` |
 
 #### Linux 특이사항
 

@@ -6,8 +6,11 @@ set -euo pipefail
 
 # Get the directory of the currently executing script
 INSTALL_CODING_FONT_LINUX_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=./common_utils.sh
-source "$INSTALL_CODING_FONT_LINUX_DIRECTORY/common_utils.sh"
+PARENT_INSTALL_CODING_FONT_LINUX_DIRECTORY="${INSTALL_CODING_FONT_LINUX_DIRECTORY%/*}"
+
+# Source utilities
+# shellcheck source=../common/utilities.sh
+source "$PARENT_INSTALL_CODING_FONT_LINUX_DIRECTORY/common/utilities.sh"
 
 # --- Configuration ---
 FONT_NAME="FiraCode"

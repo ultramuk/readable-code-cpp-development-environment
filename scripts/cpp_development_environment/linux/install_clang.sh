@@ -4,10 +4,11 @@ set -euo pipefail
 
 # Get the directory of the currently executing script
 INSTALL_CLANG_LINUX_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PARENT_INSTALL_CLANG_LINUX_DIRECTORY="${INSTALL_CLANG_LINUX_DIRECTORY%/*}"
 
-# Source common utilities
-# shellcheck source=./common_utils.sh
-source "$INSTALL_CLANG_LINUX_DIRECTORY/common_utils.sh"
+# Source utilities
+# shellcheck source=../common/utilities.sh
+source "$PARENT_INSTALL_CLANG_LINUX_DIRECTORY/common/utilities.sh"
 
 # --- Script Main Logic ---
 log_info "Starting Clang and related tools installation script for Linux..."

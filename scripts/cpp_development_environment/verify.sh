@@ -8,17 +8,9 @@ set -euo pipefail
 # Get the directory of the currently executing script
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source common OS-agnostic utilities
-# shellcheck source=./common/os_agnostic_utils.sh
-source "$SCRIPT_DIRECTORY/common/os_agnostic_utils.sh"
-
-# Detect the OS and source the appropriate# --- OS Detection ---
-detect_os # This will export DETECTED_OPERATING_SYSTEM
-OPERATING_SYSTEM=$DETECTED_OPERATING_SYSTEM
-
-# Source OS-specific utilities
-# shellcheck source=./macos/common_utils.sh
-source "$SCRIPT_DIRECTORY/$OPERATING_SYSTEM/common_utils.sh"
+# Source common utilities
+# shellcheck source=./common/utilities.sh
+source "$SCRIPT_DIRECTORY/common/utilities.sh"
 
 log_info "🚀 Starting verification of installed tools..."
 

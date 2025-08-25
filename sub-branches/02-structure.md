@@ -8,8 +8,8 @@
 scripts/cpp_development_environment/
 ├── setup.sh                           # 메인 진입점
 ├── verify.sh                          # 설치 검증
-├── common/                             # OS 무관 공통 스크립트
-│   ├── utilities.sh           # 핵심 유틸리티 함수
+├── common/                            # 공통 스크립트
+│   ├── utilities.sh                   # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh            # VS Code 설정 자동화
 │   └── setup_sample_project.sh        # 샘플 프로젝트 생성
 └── linux/                             # Linux 전용 설치 스크립트
@@ -33,7 +33,6 @@ scripts/cpp_development_environment/
 ### 2.1 common/ 디렉터리
 
 #### utilities.sh
-- OS 감지 함수 (`detect_os`)
 - 오류 처리 함수 (`handle_error`, `handle_critical_command`)
 - 로깅 함수 (`log_info`, `log_warning`, `log_error`)
 - 설치 워크플로우 실행 함수
@@ -94,7 +93,7 @@ scripts/cpp_development_environment/
 |------|------|------|
 | `setup.sh` | 메인 진입점 | 전체 설치 프로세스 시작 |
 | `verify.sh` | 검증 스크립트 | 설치 완료 후 확인 |
-| `common_utils.sh` | 공통 유틸리티 | OS별 패키지 매니저 래퍼 |
+| `common_utils.sh` | 공통 유틸리티 | 패키지 매니저 래퍼 |
 | `install_*.sh` | 개별 도구 설치 | `install_clang.sh`, `install_cmake.sh` |
 | `configure_*.sh` | 설정 작업 | `configure_vscode.sh` |
 | `setup_*.sh` | 초기 구성 | `setup_sample_project.sh` |
@@ -103,7 +102,6 @@ scripts/cpp_development_environment/
 
 | 패턴 | 용도 | 예시 |
 |------|------|------|
-| `detect_*` | 감지 함수 | `detect_os` |
 | `handle_*` | 처리 함수 | `handle_error`, `handle_critical_command` |
 | `log_*` | 로깅 함수 | `log_info`, `log_warning`, `log_error` |
 | `install_*` | 설치 함수 | `install_with_brew`, `install_with_apt` |

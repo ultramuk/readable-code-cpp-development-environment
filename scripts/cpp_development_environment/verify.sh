@@ -12,10 +12,6 @@ SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./common/utilities.sh
 source "$SCRIPT_DIRECTORY/common/utilities.sh"
 
-# Detect the OS and source the appropriate# --- OS Detection ---
-detect_os # This will export DETECTED_OPERATING_SYSTEM
-OPERATING_SYSTEM=$DETECTED_OPERATING_SYSTEM
-
 log_info "🚀 Starting verification of installed tools..."
 
 # List of essential commands to verify.

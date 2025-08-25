@@ -91,10 +91,10 @@ graph TD;
 
 | 구성 요소 | 책임 | 기술 | 상태 |
 |---|---|---|---|
-| `setup.sh` | 메인 진입점, OS 감지, 다른 스크립트 조정 | Bash | 안정 |
+| `setup.sh` | 메인 진입점, 다른 스크립트 조정 | Bash | 안정 |
 | `verify.sh` | 모든 도구가 설치되어 PATH에서 접근 가능한지 확인 | Bash | 안정 |
 | `linux/` 스크립트들 | `apt`를 사용한 Linux 도구 설치 처리 | Bash | 안정 |
-| `common/` 스크립트들 | VS Code 구성 등 OS 무관 로직 포함 | Bash | 안정 |
+| `common/` 스크립트들 | VS Code 구성 등 공통 로직 포함 | Bash | 안정 |
 | `assets/` | 템플릿 및 구성 파일 저장 (VS Code 설정 등) | JSON | 안정 |
 
 ---
@@ -234,7 +234,7 @@ readable-code-cpp-development-environment/
     └── cpp_development_environment/
         ├── setup.sh                            # 메인 설정 스크립트
         ├── verify.sh                           # 설치 검증 스크립트
-        ├── common/                             # OS 무관 스크립트
+        ├── common/                             # 공통 스크립트
         │   ├── utilities.sh                    # 공통 유틸리티 함수
         │   ├── configure_vscode.sh             # VS Code 구성
         │   └── setup_sample_project.sh         # 샘플 프로젝트 생성
@@ -314,8 +314,7 @@ log_error "오류 메시지"
 
 #### 단일 책임 원칙
 
-- **OS 감지**: `detect_os()` 함수
-- **사전 검사**: `perform_os_preflight_checks()` 함수
+- **사전 검사**: `perform_preflight_checks()` 함수
 - **설치 워크플로우**: `execute_installation_workflow()` 함수
 - **개별 단계 실행**: `execute_installation_step()` 함수
 

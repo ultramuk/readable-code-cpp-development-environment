@@ -19,7 +19,7 @@ scripts/
 ### C++ 개발 환경 설치
 
 ```bash
-# 전체 C++ 개발 환경 설치 (자동으로 OS 감지)
+# 전체 C++ 개발 환경 설치
 ./scripts/cpp_development_environment/setup.sh
 
 # 설치 검증
@@ -96,8 +96,7 @@ chmod +x .git/hooks/pre-commit
 
 ### 단일 책임 원칙
 
-- **OS 감지**: `detect_os()` 함수
-- **사전 검사**: `perform_os_preflight_checks()` 함수
+- **사전 검사**: `perform_preflight_checks()` 함수
 - **설치 워크플로우**: `execute_installation_workflow()` 함수
 - **개별 단계 실행**: `execute_installation_step()` 함수
 

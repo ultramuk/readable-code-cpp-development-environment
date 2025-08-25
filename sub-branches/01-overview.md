@@ -8,7 +8,7 @@ C++ 개발에 필요한 모든 도구를 자동으로 설치하고 구성하는 
 
 - **형태**: 완전히 구성된 C++ 개발 환경 + 실행 가능한 샘플 프로젝트
 - **핵심 기능**:
-  - 자동 OS 감지 및 플랫폼별 도구 설치
+  - 플랫폼별 도구 설치
   - 개발 도구 일괄 설치 (Clang/LLVM, CMake, Ninja, Git, GitHub CLI, VS Code)
   - VS Code C++ 개발 환경 자동 설정 및 확장 설치
   - 샘플 프로젝트 생성, 빌드 및 실행
@@ -25,7 +25,7 @@ C++ 개발에 필요한 모든 도구를 자동으로 설치하고 구성하는 
 scripts/cpp_development_environment/
 ├── setup.sh                    # 메인 진입점 스크립트
 ├── verify.sh                   # 설치 검증 스크립트
-├── common/                     # OS 무관 공통 스크립트
+├── common/                     # 공통 스크립트
 │   ├── utilities.sh            # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh     # VS Code 설정
 │   └── setup_sample_project.sh # 샘플 프로젝트 생성
@@ -37,12 +37,12 @@ scripts/cpp_development_environment/
 
 ### 1. 진입점 스크립트
 
-- **setup.sh**: OS 감지, 사전 검사, 설치 워크플로우 실행
+- **setup.sh**: 사전 검사, 설치 워크플로우 실행
 - **verify.sh**: 설치된 도구들의 버전 확인 및 동작 테스트
 
 ### 2. 공통 유틸리티 (common/)
 
-- **utilities.sh**: OS 감지, 오류 처리, 로깅 함수
+- **utilities.sh**: 오류 처리, 로깅 함수
 - **configure_vscode.sh**: VS Code 설정 파일 생성 및 확장 설치
 - **setup_sample_project.sh**: C++ 샘플 프로젝트 생성 및 빌드
 

@@ -51,7 +51,7 @@ ERROR_PERMISSION_DENIED=6       # 권한 거부
 
 | 함수 | 역할 | 실패 처리 |
 |------|------|----------|
-| `get_installation_steps()` | OS별 설치 스크립트 목록 반환 | - |
+| `get_installation_steps()` | 설치 스크립트 목록 반환 | - |
 | `execute_installation_step()` | 개별 단계 실행 및 로깅 | 스크립트 실행 실패 시 오류 처리 |
 | `execute_installation_workflow()` | 전체 워크플로우 순차 실행 | 단계별 실패 시 전체 프로세스 중단 |
 
@@ -62,7 +62,7 @@ ERROR_PERMISSION_DENIED=6       # 권한 거부
 | `is_program_installed()` | `command -v` 명령어로 PATH 확인 | 0 (설치됨) / 1 (설치 안됨) |
 | `verify_command()` | 프로그램 실행 및 버전 정보 출력 | 실행 가능 여부 및 버전 정보 |
 
-## 2. OS별 공통 유틸리티 비교
+## 2. 공통 유틸리티 비교
 
 ### 2.1 Linux (linux/common_utils.sh)
 

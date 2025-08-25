@@ -227,9 +227,6 @@ EOF
 
 # --- Main Logic ---
 
-# Detect OS first
-detect_os
-
 # Parse command line arguments
 if [[ $# -eq 0 ]]; then
   show_usage

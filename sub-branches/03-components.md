@@ -31,23 +31,7 @@ ERROR_PERMISSION_DENIED=6       # 권한 거부
 | `handle_critical_command()` | command, message, cleanup_function | 명령어 실행 → 실패 시 handle_error 호출 |
 | `validate_required_programs()` | program_list | 여러 프로그램 존재 여부 일괄 검증 |
 
-### 1.3 OS 감지 및 검증
-
-#### OS 감지 로직
-
-1. `OSTYPE` 환경변수 확인
-2. `uname` 명령어 결과 확인
-3. `DETECTED_OPERATING_SYSTEM` 변수에 "macos" 또는 "linux" 설정
-4. 지원되지 않는 OS인 경우 오류 처리
-
-#### 사전 검사 (Preflight Checks)
-
-| 플랫폼 | 확인 항목 | 실패 시 동작 |
-|--------|-----------|-------------|
-| macOS | Homebrew 설치 여부 | ERROR_DEPENDENCY_MISSING로 종료 |
-| Linux | sudo 권한, apt-get 존재 | ERROR_PERMISSION_DENIED 또는 ERROR_DEPENDENCY_MISSING로 종료 |
-
-### 1.4 설치 워크플로우 관리
+### 1.3 설치 워크플로우 관리
 
 #### 설치 단계 순서 (9단계)
 
@@ -71,7 +55,7 @@ ERROR_PERMISSION_DENIED=6       # 권한 거부
 | `execute_installation_step()` | 개별 단계 실행 및 로깅 | 스크립트 실행 실패 시 오류 처리 |
 | `execute_installation_workflow()` | 전체 워크플로우 순차 실행 | 단계별 실패 시 전체 프로세스 중단 |
 
-### 1.5 프로그램 검증 시스템
+### 1.4 프로그램 검증 시스템
 
 | 함수 | 검증 방법 | 반환값 |
 |------|-----------|--------|
@@ -80,24 +64,7 @@ ERROR_PERMISSION_DENIED=6       # 권한 거부
 
 ## 2. OS별 공통 유틸리티 비교
 
-### 2.1 macOS (macos/common_utils.sh)
-
-#### Homebrew 기반 설치 함수
-
-| 함수 | 패키지 유형 | 동작 |
-|------|-------------|------|
-| `install_with_brew()` | formula/cask 자동 구분 | 설치 상태 확인 → 미설치시 설치 |
-| `_install_with_brew()` | 내부 구현 함수 | 실제 brew 명령어 실행 |
-| `install_and_verify_tool()` | 검증 포함 설치 | 설치 → 검증 → 실패시 재시도 |
-
-#### 설치 확인 로직
-
-```bash
-brew list --formula $package_name > /dev/null 2>&1    # formula 확인
-brew list --cask $package_name > /dev/null 2>&1       # cask 확인
-```
-
-### 2.2 Linux (linux/common_utils.sh)
+### 2.1 Linux (linux/common_utils.sh)
 
 #### apt 기반 설치 함수
 
@@ -119,13 +86,6 @@ apt-get install -y $package_name                        # 설치 실행
 
 ### 3.1 공통 설치 패턴
 
-#### macOS 설치 스크립트 구조
-
-1. **기존 도구 확인**: Apple 기본 제공 도구 (Apple Clang 등) 확인
-2. **Homebrew 설치**: `install_with_brew` 함수 호출
-3. **심볼릭 링크**: 필요시 `/usr/local/bin` 링크 생성
-4. **최종 검증**: `verify_command` 함수로 설치 확인
-
 #### Linux 설치 스크립트 구조
 
 1. **apt 캐시 업데이트**: `update_apt_cache` 함수 호출
@@ -134,15 +94,15 @@ apt-get install -y $package_name                        # 설치 실행
 
 ### 3.2 도구별 설치 세부사항
 
-| 도구 | macOS 패키지 | Linux 패키지 | 특별 처리 |
+| 도구 | Linux 패키지 | 특별 처리 |
 |------|-------------|--------------|-----------|
-| Clang/LLVM | `llvm` | `clang`, `clangd`, `clang-format` | Apple Clang 중복 확인 |
-| CMake | `cmake` | `cmake` | 버전 3.16+ 요구 |
-| Ninja | `ninja` | `ninja-build` | - |
-| Git | `git` | `git` | 기본 설치된 경우 스킵 |
-| GitHub CLI | `gh` | `gh` | - |
-| VS Code | `visual-studio-code` (cask) | `code` (snap) | 확장 설치는 별도 처리 |
-| Fira Code | `font-fira-code` (cask) | `fonts-firacode` | - |
+| Clang/LLVM | `clang`, `clangd`, `clang-format` | Apple Clang 중복 확인 |
+| CMake | `cmake` | 버전 3.16+ 요구 |
+| Ninja | `ninja-build` | - |
+| Git | `git` | 기본 설치된 경우 스킵 |
+| GitHub CLI | `gh` | - |
+| VS Code | `code` (snap) | 확장 설치는 별도 처리 |
+| Fira Code | `fonts-firacode` | - |
 
 ## 4. VS Code 설정 시스템
 
@@ -194,7 +154,7 @@ done
 #### 설정 병합 과정
 
 1. **jq 도구 설치**: JSON 파싱 및 병합 도구
-2. **기존 설정 읽기**: `~/.config/Code/User/settings.json` (Linux) 또는 해당 macOS 경로
+2. **기존 설정 읽기**: `~/.config/Code/User/settings.json` (Linux) 경로
 3. **템플릿 병합**: `assets/vscode_settings_template.json`과 기존 설정 병합
 4. **안전한 교체**: 임시 파일을 통한 원자적 파일 교체
 

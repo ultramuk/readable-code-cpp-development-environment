@@ -2,7 +2,7 @@
 
 ## 프로젝트 정의
 
-C++ 개발에 필요한 모든 도구를 자동으로 설치하고 구성하는 Shell 스크립트 기반 도구입니다. 단일 명령어로 macOS와 Linux에서 완전한 C++ 개발 환경을 구축합니다.
+C++ 개발에 필요한 모든 도구를 자동으로 설치하고 구성하는 Shell 스크립트 기반 도구입니다. 단일 명령어로 Linux에서 완전한 C++ 개발 환경을 구축합니다.
 
 ## 프루트 (결과물)
 
@@ -17,7 +17,7 @@ C++ 개발에 필요한 모든 도구를 자동으로 설치하고 구성하는 
 - **결과물 위치**:
   - 시스템 전체: PATH에 등록된 개발 도구들
   - `~/cpp-sample`: 빌드된 Hello World C++ 프로젝트
-  - VS Code 사용자 설정: macOS `~/Library/Application Support/Code/User/settings.json`, Linux `~/.config/Code/User/settings.json`
+  - VS Code 사용자 설정: Linux `~/.config/Code/User/settings.json`
 
 ## 전체 구조
 
@@ -29,11 +29,7 @@ scripts/cpp_development_environment/
 │   ├── utilities.sh            # 핵심 유틸리티 함수
 │   ├── configure_vscode.sh     # VS Code 설정
 │   └── setup_sample_project.sh # 샘플 프로젝트 생성
-├── macos/                      # macOS 전용 설치 스크립트
-│   ├── common_utils.sh         # macOS 공통 유틸리티
-│   └── install_*.sh            # 개별 도구 설치 스크립트
 └── linux/                      # Linux 전용 설치 스크립트
-    ├── common_utils.sh         # Linux 공통 유틸리티
     └── install_*.sh            # 개별 도구 설치 스크립트
 ```
 
@@ -52,7 +48,6 @@ scripts/cpp_development_environment/
 
 ### 3. 플랫폼별 설치 스크립트
 
-- **macos/**: Homebrew 기반 도구 설치
 - **linux/**: apt 패키지 매니저 기반 도구 설치
 
 ## 기술 스택 / 도구
@@ -68,14 +63,13 @@ scripts/cpp_development_environment/
 ### 스크립트 기술
 
 - **Shell**: Bash 스크립트
-- **패키지 매니저**: Homebrew (macOS), apt (Linux)
+- **패키지 매니저**: apt (Linux)
 - **설정 포맷**: JSON (VS Code 설정)
 
 ## 의존성 / 연결 관계
 
 ### 외부 의존성
 
-- **macOS**: Homebrew 패키지 매니저
 - **Linux**: sudo 권한, apt 패키지 매니저
 - **공통**: 인터넷 연결
 
@@ -83,7 +77,7 @@ scripts/cpp_development_environment/
 
 ```text
 setup.sh → utilities.sh (OS 감지)
-        → macos/common_utils.sh 또는 linux/common_utils.sh
+        → linux/common_utils.sh
         → 개별 install_*.sh 스크립트들
         → configure_vscode.sh
         → setup_sample_project.sh
@@ -106,7 +100,7 @@ setup.sh → utilities.sh (OS 감지)
 | `utilities.sh` | 공통 유틸리티 | `scripts/cpp_development_environment/common/` | source로 로드 |
 | `configure_vscode.sh` | VS Code 설정 | `scripts/cpp_development_environment/common/` | setup.sh에서 호출 |
 | `setup_sample_project.sh` | 샘플 프로젝트 | `scripts/cpp_development_environment/common/` | setup.sh에서 호출 |
-| `install_*.sh` | 개별 도구 설치 | `scripts/cpp_development_environment/macos/`, `linux/` | setup.sh에서 호출 |
+| `install_*.sh` | 개별 도구 설치 | `scripts/cpp_development_environment/linux/` | setup.sh에서 호출 |
 | `vscode_settings_template.json` | VS Code 설정 템플릿 | `assets/` | configure_vscode.sh에서 사용 |
 
 ## 서브브랜치 네비게이션

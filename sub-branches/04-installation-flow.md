@@ -35,44 +35,7 @@ graph TD
 
 ## 2. OS별 설치 플로우
 
-### 2.1 macOS 설치 플로우
-
-#### 사전 검사
-
-```mermaid
-graph TD
-    A[macOS 감지] --> B[Homebrew 설치 확인]
-    B --> C{Homebrew 존재}
-    C -->|예| D[사전 검사 통과]
-    C -->|아니오| E[ERROR_DEPENDENCY_MISSING]
-    E --> F[프로세스 종료]
-```
-
-#### 개별 도구 설치 패턴
-
-```mermaid
-graph TD
-    A[도구 설치 시작] --> B[Apple 기본 도구 확인]
-    B --> C{기본 도구 존재}
-    C -->|예| D[기본 도구 사용 결정]
-    C -->|아니오| E[Homebrew 설치 필요]
-    D --> F{설치 스킵 여부}
-    F -->|스킵| G[다음 단계]
-    F -->|설치| E
-    E --> H[brew list 확인]
-    H --> I{이미 설치됨}
-    I -->|예| J[설치 스킵]
-    I -->|아니오| K[brew install 실행]
-    K --> L[설치 검증]
-    L --> M{검증 성공}
-    M -->|성공| N[설치 완료]
-    M -->|실패| O[ERROR_INSTALLATION_FAILED]
-    J --> N
-    N --> G
-    O --> P[프로세스 종료]
-```
-
-### 2.2 Linux 설치 플로우
+### 2.1 Linux 설치 플로우
 
 #### 사전 검사
 
@@ -110,31 +73,6 @@ graph TD
 ## 3. 개별 도구 설치 세부 플로우
 
 ### 3.1 Clang/LLVM 설치 플로우
-
-#### macOS Clang 설치
-
-```mermaid
-graph TD
-    A[Clang 설치 시작] --> B[Apple Clang 확인]
-    B --> C{Apple Clang 존재}
-    C -->|예| D[Apple vs LLVM Clang 선택]
-    C -->|아니오| E[LLVM Clang 필수 설치]
-    D --> F{LLVM Clang 설치 필요}
-    F -->|예| E
-    F -->|아니오| G[Apple Clang 사용]
-    E --> H[brew install llvm]
-    H --> I[PATH 확인]
-    I --> J[clang 버전 검증]
-    J --> K[clangd 검증]
-    K --> L[clang-format 검증]
-    L --> M{모든 도구 검증 성공}
-    M -->|성공| N[설치 완료]
-    M -->|실패| O[설치 실패]
-    G --> P[Apple Clang 검증]
-    P --> Q{Apple Clang 동작}
-    Q -->|성공| N
-    Q -->|실패| O
-```
 
 #### Linux Clang 설치
 

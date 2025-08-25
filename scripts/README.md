@@ -10,7 +10,6 @@ scripts/
 │   ├── setup.sh                   # 메인 설치 스크립트
 │   ├── verify.sh                  # 설치 검증 스크립트
 │   ├── common/                    # 공통 유틸리티와 설정
-│   ├── macos/                     # macOS 전용 설치 스크립트들
 │   └── linux/                     # Linux 전용 설치 스크립트들
 └── format_shell_scripts.sh        # 쉘 스크립트 포매터
 ```
